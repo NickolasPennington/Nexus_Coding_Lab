@@ -6,6 +6,7 @@ from .errors import CustomerNotFoundError
 from .models import Customer, CustomerTier
 from .policies import CustomerValidationPolicy
 from .repository import CustomerRepository
+from .auditor import AuditRecord, Auditor
 
 
 class CustomerRegistrationService:
@@ -57,10 +58,12 @@ class CustomerLifecycleService:
         repository: CustomerRepository,
         authorization: AuthorizationService,
         events: EventBus,
+        auditor: Auditor
     ) -> None:
         self._repository = repository
         self._authorization = authorization
         self._events = events
+        self._auditor = auditor
 
     def deactivate(self, actor: Actor, customer_id: str, reason: str) -> Customer:
         self._authorization.require_customer_management(actor)
@@ -73,11 +76,12 @@ class CustomerLifecycleService:
 
         customer.active = False
         self._repository.save(customer)
+        self._auditor.add_record(AuditRecord(customer_id, actor.user_id, reason.strip()))
         self._events.publish(
             DomainEvent(
                 event_type="customer.deactivated",
                 customer_id=customer.customer_id,
-                payload={"email": customer.email, "reason": reason.strip()},
+                payload={"email": customer.email},
             )
         )
         return customer

@@ -10,6 +10,14 @@ Interpreter/version, command, actual output. Expected starter: four passes, four
 ## Our design decision
 Audit owner and interface; ordering; one credible alternative; accepted benefit/cost.
 
+
+owner: auditor class (contains list of audits, has a record function for adding an audit record to the list)
+call that records audit history: 
+what is the audit recorded relative to the public event/publication:
+what cost is introduced:
+
+
+
 ## Actual changes
 Changed files/functions. What is implemented versus still proposed?
 Explain the sanctioned original notification-test expectation change.
