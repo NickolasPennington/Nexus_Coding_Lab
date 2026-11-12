@@ -17,6 +17,10 @@ what is the audit recorded relative to the public event/publication:
 what cost is introduced:
 
 
+Thursdays:
+because of our design tuesday of having a list that was accessed via a add record and a get records call, all we had to implement for an audit file was upon intantiation of the auditor class, we read the file into that list, and then as we append records, we just append the list and the file
+
+
 
 ## Actual changes
 Changed files/functions. What is implemented versus still proposed?
